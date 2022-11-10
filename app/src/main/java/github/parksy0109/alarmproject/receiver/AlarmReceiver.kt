@@ -4,6 +4,7 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import github.parksy0109.alarmproject.MainActivity
@@ -21,10 +22,12 @@ class AlarmReceiver : BroadcastReceiver() {
         if (context == null) return
 
         val builder = NotificationCompat.Builder(context, CHANNEL_ID).apply {
-            setSmallIcon(R.drawable.ic_baseline_calendar_month_24)
+            setSmallIcon(R.drawable.ic_img_noti_small_icon)
+            color = Color.RED
             setContentTitle("Alarm")
-            setContentText("Give me a Star")
+            setContentText("content Text")
             setAutoCancel(true)
+            setStyle(NotificationCompat.BigTextStyle().bigText("content Text\nGive me a Star"))
             setDefaults(NotificationCompat.DEFAULT_ALL)
             priority = NotificationCompat.PRIORITY_HIGH
             setContentIntent(pendingIntent)

@@ -7,14 +7,12 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.graphics.Typeface
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.google.android.material.snackbar.Snackbar
@@ -22,7 +20,7 @@ import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import github.parksy0109.alarmproject.databinding.ActivityMainBinding
 import github.parksy0109.alarmproject.receiver.AlarmReceiver
-import org.w3c.dom.Text
+import java.time.LocalDateTime
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -45,6 +43,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         createNotificationChannel()
 
+        tvTimeInit()
+
         binding.btnSelectTime.setOnClickListener {
             showTimePicker()
         }
@@ -55,6 +55,15 @@ class MainActivity : AppCompatActivity() {
         }
         binding.btnCancelAlarm.setOnClickListener {
             cancelAlarm()
+        }
+    }
+
+    private fun tvTimeInit() {
+        val now = LocalDateTime.now()
+        if (now.hour > 12) {
+            binding.tvTime.text = getString(R.string.time_format, String.format("%02d", now.hour.minus(12)),String.format("%02d", now.minute), "PM")
+        } else {
+            binding.tvTime.text = getString(R.string.time_format, String.format("%02d", now.hour),String.format("%02d",now.minute), "AM")
         }
     }
 
@@ -88,7 +97,7 @@ class MainActivity : AppCompatActivity() {
             text.gravity = Gravity.CENTER_HORIZONTAL
             text.textAlignment = View.TEXT_ALIGNMENT_CENTER
             text.typeface = ResourcesCompat.getFont(this@MainActivity, R.font.cookierun_bold)
-            text.setTextAppearance(applicationContext, R.style.BoldTextFont_14sp_white_shadow)
+            text.setTextAppearance(R.style.BoldTextFont_14sp_white_shadow)
         }
             .setBackgroundTint(ContextCompat.getColor(this@MainActivity, R.color.orange))
             .show()
